@@ -19,11 +19,11 @@ by its author.
 
 Installation
 
-	$ go get github.com/geomyidia/zylog/logger
+	$ go get github.com/zylisp/zylog/logger
 
 Additionally, there is a demo you may install and run:
 
-	$ go get github.com/geomyidia/zylog/cmd/zylog-demo
+	$ go get github.com/zylisp/zylog/cmd/zylog-demo
 
 # Configuration
 
@@ -33,7 +33,7 @@ SetupLogging. For example,
 package main
 
 	import (
-		logger "github.com/geomyidia/zylog/logger"
+		logger "github.com/zylisp/zylog/logger"
 		log "github.com/sirupsen/logrus"
 	)
 

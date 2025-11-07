@@ -1,7 +1,7 @@
 VERSION = 0.2.0
 
 DVCS_HOST = github.com
-ORG = geomyidia
+ORG = zylisp
 PROJ = zylog
 FQ_PROJ = $(DVCS_HOST)/$(ORG)/$(PROJ)
 
@@ -32,14 +32,14 @@ build: clean
 	@GO111MODULE=on $(GO) build \
 		-ldflags "$(LDFLAGS)" \
 		-o ./bin/zylog-demo \
-		github.com/geomyidia/zylog/cmd/zylog-demo
+		github.com/zylisp/zylog/cmd/zylog-demo
 
 demo: build
 	@echo ">> Running zylog-demo ..."
 	./bin/zylog-demo
 
 modules-init:
-	GO111MODULE=on $(GO) mod init github.com/geomyidia/zylog
+	GO111MODULE=on $(GO) mod init github.com/zylisp/zylog
 
 modules-update:
 	GO111MODULE=on $(GO) get -u

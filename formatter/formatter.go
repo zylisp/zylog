@@ -11,7 +11,7 @@ import (
 	"github.com/fatih/color"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/geomyidia/zylog/level"
+	"github.com/zylisp/zylog/level"
 )
 
 // TSFormat represents a timestamp format type.

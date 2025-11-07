@@ -1,7 +1,7 @@
 // Package options defines configuration options for zylog.
 package options
 
-import "github.com/geomyidia/zylog/formatter"
+import "github.com/zylisp/zylog/formatter"
 
 var (
 	defaultOpts = &ZyLog{

@@ -9,8 +9,8 @@ package main
 import (
 	log "github.com/sirupsen/logrus"
 
-	"github.com/geomyidia/zylog"
-	"github.com/geomyidia/zylog/options"
+	"github.com/zylisp/zylog"
+	"github.com/zylisp/zylog/options"
 )
 
 // SetupLogger ...

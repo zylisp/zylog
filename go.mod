@@ -1,4 +1,4 @@
-module github.com/geomyidia/zylog
+module github.com/zylisp/zylog
 
 go 1.23.0
 

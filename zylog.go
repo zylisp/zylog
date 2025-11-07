@@ -6,9 +6,9 @@ import (
 	"github.com/fatih/color"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/geomyidia/zylog/errors"
-	"github.com/geomyidia/zylog/formatter"
-	"github.com/geomyidia/zylog/options"
+	"github.com/zylisp/zylog/errors"
+	"github.com/zylisp/zylog/formatter"
+	"github.com/zylisp/zylog/options"
 )
 
 // Output destination constants
