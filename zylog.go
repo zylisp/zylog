@@ -45,6 +45,9 @@ func SetupLogging(opts *options.ZyLog) {
 	log.SetFormatter(&formatter.LogLine{
 		DisableColors:   disableColors,
 		TimestampFormat: timestampFormat,
+		PadLevel:        opts.PadLevel,
+		PadAmount:       opts.PadAmount,
+		PadSide:         opts.PadSide,
 	})
 	log.SetReportCaller(opts.ReportCaller)
 	log.Info("Logging initialized.")

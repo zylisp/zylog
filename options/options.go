@@ -10,6 +10,7 @@ var (
 		Output:       "stdout",
 		ReportCaller: true,
 		PadLevel:     true,
+		PadAmount:    7,
 		PadSide:      "left",
 	}
 )
@@ -22,12 +23,20 @@ type ZyLog struct {
 	ReportCaller    bool
 	TimestampFormat formatter.TSFormat // RFC3339, Simple (YYYYMMDD.HHmmSS), or Time (HH:mm:SS); defaults to Simple
 	PadLevel        bool               // Whether to pad level strings for alignment
+	PadAmount       int                // Number of characters to pad level strings to
 	PadSide         string             // "left" or "right"; which side to pad level strings on
 }
 
 // Default returns the default ZyLog configuration options.
 func Default() *ZyLog {
 	return defaultOpts
+}
+
+// NoCaller returns ZyLog configuration options with PadLevel disabled.
+func NoLevelPadding() *ZyLog {
+	noPad := defaultOpts
+	noPad.PadLevel = false
+	return noPad
 }
 
 // NoCaller returns ZyLog configuration options with ReportCaller disabled.

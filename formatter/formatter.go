@@ -48,6 +48,12 @@ type LogLine struct {
 	DisableColors bool
 	// TimestampFormat specifies the format for timestamps.
 	TimestampFormat TSFormat
+	// PadLevel specifies whether to pad level strings for alignment.
+	PadLevel bool
+	// PadAmount specifies the total width to pad level strings to.
+	PadAmount int
+	// PadSide specifies which side to add padding on ("left" or "right").
+	PadSide string
 }
 
 // Format provides the custom formatting of the zylog logger.
@@ -73,7 +79,7 @@ func (f *LogLine) Format(entry *log.Entry) ([]byte, error) {
 	}
 
 	time := color.HiBlackString(entry.Time.Format(f.TimestampFormat.ToTimeFormat()))
-	level := ColorLevel(strings.ToUpper(entry.Level.String()))
+	level := ColorLevel(strings.ToUpper(entry.Level.String()), f.PadLevel, f.PadAmount, f.PadSide)
 
 	fmt.Fprintf(b, "%s %s", time, level)
 	if entry.Logger.ReportCaller {
@@ -98,9 +104,22 @@ func (f *LogLine) Format(entry *log.Entry) ([]byte, error) {
 }
 
 // ColorLevel determines the color of the log level based upon the string
-// value of the log level.
-func ColorLevel(lvl string) string {
-	switch lvl {
+// value of the log level. If padLevel is true, the level string will be
+// padded to padAmount characters, aligned according to padSide.
+func ColorLevel(lvl string, padLevel bool, padAmount int, padSide string) string {
+	// Apply padding before colorizing
+	if padLevel && padAmount > 0 {
+		if padSide == "left" {
+			// Right-align: add spaces on the left
+			lvl = fmt.Sprintf("%*s", padAmount, lvl)
+		} else {
+			// Left-align (default): add spaces on the right
+			lvl = fmt.Sprintf("%-*s", padAmount, lvl)
+		}
+	}
+
+	// Now colorize the padded string
+	switch strings.TrimSpace(lvl) {
 	case level.Trace:
 		lvl = color.HiMagentaString(lvl)
 	case level.Debug:
