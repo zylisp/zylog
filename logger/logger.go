@@ -64,18 +64,48 @@ import (
 	"github.com/geomyidia/zylog/errors"
 )
 
+// Format represents a timestamp format type
+type Format int
+
+// Timestamp format constants
+const (
+	Unset Format = iota
+	RFC3339
+	Simple
+	Time
+)
+
 // TextFormatter formats logs into text.
 type TextFormatter struct {
 	// Force disabling colors.
 	DisableColors bool
+	// TimestampFormat specifies the format for timestamps.
+	TimestampFormat Format
 }
 
 // ZyLogOptions are used by the zylog logger to set up logrus.
 type ZyLogOptions struct {
-	Colored      bool
-	Level        string
-	Output       string // stdout, stderr, or filesystem
-	ReportCaller bool
+	Colored         bool
+	Level           string
+	Output          string // stdout, stderr, or filesystem
+	ReportCaller    bool
+	TimestampFormat Format // RFC3339, Simple (YYYYMMDD.HHmmSS), or Time (HH:mm:SS); defaults to Simple
+}
+
+// ToTimeFormat converts a Format to its corresponding time format string.
+func (f Format) ToTimeFormat() string {
+	switch f {
+	case RFC3339:
+		return time.RFC3339
+	case Simple:
+		return "20060102.150405"
+	case Time:
+		return "15:04:05"
+	case Unset:
+		return "20060102.150405" // Default to Simple
+	default:
+		return "20060102.150405" // Default to Simple
+	}
 }
 
 // SetupLogging performs the setup of the zylog logger.
@@ -97,8 +127,14 @@ func SetupLogging(opts *ZyLogOptions) {
 	}
 	disableColors := !opts.Colored
 	color.NoColor = disableColors
+	timestampFormat := opts.TimestampFormat
+	if timestampFormat == Unset {
+		// Default to Simple if not set
+		timestampFormat = Simple
+	}
 	log.SetFormatter(&TextFormatter{
-		DisableColors: disableColors,
+		DisableColors:   disableColors,
+		TimestampFormat: timestampFormat,
 	})
 	log.SetReportCaller(opts.ReportCaller)
 	log.Info("Logging initialized.")
@@ -126,7 +162,7 @@ func (f *TextFormatter) Format(entry *log.Entry) ([]byte, error) {
 		b = &bytes.Buffer{}
 	}
 
-	time := color.GreenString(entry.Time.Format(time.RFC3339))
+	time := color.HiBlackString(entry.Time.Format(f.TimestampFormat.ToTimeFormat()))
 	level := ColorLevel(strings.ToUpper(entry.Level.String()))
 
 	fmt.Fprintf(b, "%s %s", time, level)
@@ -137,7 +173,7 @@ func (f *TextFormatter) Format(entry *log.Entry) ([]byte, error) {
 	}
 	if entry.Message != "" {
 		b.WriteString(color.CyanString(" ▶ "))
-		b.WriteString(entry.Message)
+		b.WriteString(color.GreenString(entry.Message))
 	}
 
 	if len(entry.Data) > 0 {

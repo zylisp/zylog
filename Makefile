@@ -28,11 +28,15 @@ default: lint build
 default-gopath:
 	@echo $(DEFAULT_GOPATH)
 
-build:
+build: clean
 	GO111MODULE=on $(GO) build \
 		-ldflags "$(LDFLAGS)" \
 		-o ./bin/zylog-demo \
 		github.com/geomyidia/zylog/cmd/zylog-demo
+
+demo: build
+	@echo ">> Running zylog-demo ..."
+	./bin/zylog-demo
 
 modules-init:
 	GO111MODULE=on $(GO) mod init github.com/geomyidia/zylog
