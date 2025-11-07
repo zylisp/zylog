@@ -15,11 +15,11 @@ export PATH:=$(PATH):$(DEFAULT_GOBIN)
 
 GOLANGCI_LINT=$(DEFAULT_GOBIN)/golangci-lint
 
-LD_VERSION = -X $(FQ_PROJ)/logger.Version=$(VERSION)
-LD_BUILDDATE = -X $(FQ_PROJ)/logger.BuildDate=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-LD_GITCOMMIT = -X $(FQ_PROJ)/logger.GitCommit=$(shell git rev-parse --short HEAD)
-LD_GITBRANCH = -X $(FQ_PROJ)/logger.GitBranch=$(shell git rev-parse --abbrev-ref HEAD)
-LD_GITSUMMARY = -X $(FQ_PROJ)/logger.GitSummary=$(shell git describe --tags --dirty --always)
+LD_VERSION = -X $(FQ_PROJ).Version=$(VERSION)
+LD_BUILDDATE = -X $(FQ_PROJ).BuildDate=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+LD_GITCOMMIT = -X $(FQ_PROJ).GitCommit=$(shell git rev-parse --short HEAD)
+LD_GITBRANCH = -X $(FQ_PROJ).GitBranch=$(shell git rev-parse --abbrev-ref HEAD)
+LD_GITSUMMARY = -X $(FQ_PROJ).GitSummary=$(shell git describe --tags --dirty --always)
 
 LDFLAGS = -w -s $(LD_VERSION) $(LD_BUILDDATE) $(LD_GITBRANCH) $(LD_GITSUMMARY) $(LD_GITCOMMIT)
 

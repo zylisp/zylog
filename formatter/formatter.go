@@ -4,7 +4,6 @@ package formatter
 import (
 	"bytes"
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 
@@ -21,10 +20,12 @@ type TSFormat int
 const (
 	TSUnset TSFormat = iota
 	RFC3339
+	StandardTimestamp
 	SimpleTimestamp
 	TimeOnly
 
 	TSSimple   = "20060102.150405"
+	TSStandard = "2006/01/02 15:04:05"
 	TSTimeOnly = "15:04:05"
 )
 
@@ -33,6 +34,8 @@ func (f TSFormat) ToTimeFormat() string {
 	switch f {
 	case RFC3339:
 		return time.RFC3339
+	case StandardTimestamp:
+		return TSStandard
 	case SimpleTimestamp:
 		return TSSimple
 	case TimeOnly:
@@ -54,6 +57,8 @@ type LogLine struct {
 	PadAmount int
 	// PadSide specifies which side to add padding on ("left" or "right").
 	PadSide string
+	// AttrSeparator specifies the separator between message and attributes.
+	MsgSeparator string
 }
 
 // Format provides the custom formatting of the zylog logger.
@@ -78,25 +83,28 @@ func (f *LogLine) Format(entry *log.Entry) ([]byte, error) {
 		b = &bytes.Buffer{}
 	}
 
-	time := color.HiBlackString(entry.Time.Format(f.TimestampFormat.ToTimeFormat()))
+	timestamp := FormatTimestamp(entry.Time.Format(f.TimestampFormat.ToTimeFormat()))
 	level := ColorLevel(strings.ToUpper(entry.Level.String()), f.PadLevel, f.PadAmount, f.PadSide)
 
-	fmt.Fprintf(b, "%s %s", time, level)
+	fmt.Fprintf(b, "%s %s", timestamp, level)
 	if entry.Logger.ReportCaller {
-		fmt.Fprintf(b, " [%s:%s]",
-			color.HiYellowString(entry.Caller.Function),
-			color.YellowString(strconv.Itoa(entry.Caller.Line)))
+		b.WriteString(FormatCaller(entry.Caller.Function, entry.Caller.Line))
 	}
 	if entry.Message != "" {
-		b.WriteString(color.CyanString(" ▶ "))
-		b.WriteString(color.GreenString(entry.Message))
+		b.WriteString(FormatArrow())
+		b.WriteString(FormatMessage(entry.Message))
 	}
 
 	if len(entry.Data) > 0 {
-		b.WriteString(" || ")
-	}
-	for key, value := range entry.Data {
-		fmt.Fprintf(b, "%s={%s}, ", key, value)
+		b.WriteString(f.MsgSeparator)
+		first := true
+		for key, value := range entry.Data {
+			if !first {
+				b.WriteString(", ")
+			}
+			fmt.Fprintf(b, "%s={%s}", FormatAttrKey(key), FormatAttrValue(fmt.Sprintf("%v", value)))
+			first = false
+		}
 	}
 
 	b.WriteByte('\n')
@@ -126,7 +134,7 @@ func ColorLevel(lvl string, padLevel bool, padAmount int, padSide string) string
 		lvl = color.HiCyanString(lvl)
 	case level.Info:
 		lvl = color.HiGreenString(lvl)
-	case level.Warn:
+	case level.Warn, level.Warning:
 		lvl = color.HiYellowString(lvl)
 	case level.Error:
 		lvl = color.RedString(lvl)

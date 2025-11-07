@@ -4,10 +4,13 @@ package errors
 import (
 	"errors"
 	"fmt"
+
+	"github.com/zylisp/zylog/options"
 )
 
 const (
 	logOutputError      = "unsupported log output:"
+	loggerUnsupError    = "unsupported logger:"
 	notImplementedError = "not yet implemented:"
 )
 
@@ -24,4 +27,9 @@ func ErrUnsupLogOutput(output string) error {
 // ErrNotImplemented returns an error indicating that a feature is not yet implemented.
 func ErrNotImplemented(name string) error {
 	return fmt.Errorf("%s %s", notImplementedError, name)
+}
+
+// ErrUnsupLogger returns an error indicating that a given logger is not supported
+func ErrUnsupLogger(logger options.Logger) error {
+	return fmt.Errorf("%s %s", loggerUnsupError, logger.String())
 }
