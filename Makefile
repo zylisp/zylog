@@ -29,7 +29,7 @@ default-gopath:
 	@echo $(DEFAULT_GOPATH)
 
 build: clean
-	GO111MODULE=on $(GO) build \
+	@GO111MODULE=on $(GO) build \
 		-ldflags "$(LDFLAGS)" \
 		-o ./bin/zylog-demo \
 		github.com/geomyidia/zylog/cmd/zylog-demo

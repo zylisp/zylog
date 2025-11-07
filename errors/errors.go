@@ -16,9 +16,9 @@ var (
 	ErrLogLevel = errors.New("could not set configured log level")
 )
 
-// ErrLogOutput returns an error indicating that the specified log output is unsupported.
-func ErrLogOutput(output string) error {
-	return fmt.Errorf("%s %s", logOutputError, output)
+// ErrUnsupLogOutput returns an error indicating that the specified log output is unsupported.
+func ErrUnsupLogOutput(output string) error {
+	return fmt.Errorf("unsupported output: %s %s", logOutputError, output)
 }
 
 // ErrNotImplemented returns an error indicating that a feature is not yet implemented.

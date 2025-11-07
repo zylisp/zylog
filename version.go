@@ -1,6 +1,9 @@
-package logger
+package zylog
 
-import "fmt"
+import (
+	"fmt"
+	"runtime"
+)
 
 var (
 	// Version is populated at compile from ./VERSION.
@@ -37,4 +40,11 @@ func BuildString() string {
 		return "N/A"
 	}
 	return fmt.Sprintf("%s@%s, %s", GitBranch, GitCommit, BuildDate)
+}
+
+// PrintVersions outputs version information for zylog, build details, and Go version.
+func PrintVersions() {
+	fmt.Printf("zylog version: %s\n", VersionString())
+	fmt.Printf("Build: %s\n", BuildString())
+	fmt.Printf("Go version: %s\n", runtime.Version())
 }

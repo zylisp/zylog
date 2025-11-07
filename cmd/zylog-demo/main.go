@@ -7,41 +7,24 @@ without caller information are demonstrated.
 package main
 
 import (
-	"fmt"
-	"runtime"
-
-	logger "github.com/geomyidia/zylog/logger"
 	log "github.com/sirupsen/logrus"
+
+	"github.com/geomyidia/zylog"
+	"github.com/geomyidia/zylog/options"
 )
 
 // SetupLogger ...
 func SetupLogger() {
-	logger.SetupLogging(&logger.ZyLogOptions{
-		Colored:      true,
-		Level:        "trace",
-		Output:       "stdout",
-		ReportCaller: true,
-	})
+	zylog.SetupLogging(options.Default())
 }
 
 // SetupLoggerNoCaller ...
 func SetupLoggerNoCaller() {
-	logger.SetupLogging(&logger.ZyLogOptions{
-		Colored:      true,
-		Level:        "trace",
-		Output:       "stdout",
-		ReportCaller: false,
-	})
-}
-
-func printVersions() {
-	fmt.Printf("zylog version: %s\n", logger.VersionString())
-	fmt.Printf("Build: %s\n", logger.BuildString())
-	fmt.Printf("Go version: %s\n", runtime.Version())
+	zylog.SetupLogging(options.NoCaller())
 }
 
 func main() {
-	printVersions()
+	zylog.PrintVersions()
 	SetupLogger()
 	log.Trace("This is trace")
 	log.Debug("This is debug")
