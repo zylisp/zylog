@@ -21,6 +21,27 @@
 go get github.com/zylisp/zylog
 ```
 
+## Example Use
+
+Run the comprehensive demo:
+
+```bash
+make demo
+```
+
+Or build and run manually:
+
+```bash
+make build
+./bin/zylog-demo
+```
+
+At which point you should see something like the following:
+
+![screenshot](assets/images/screenshot.png)
+
+See the demo code in  `cmd/zylog-demo/main.go` for examples of both logging backends.
+
 ## Quick Start
 
 ### Unified Setup (Recommended)
@@ -178,35 +199,6 @@ opts.TimestampFormat = formatter.TimeOnly         // 14:30:52
 - ✅ Wide ecosystem support
 - ✅ Familiar to many Go developers
 
-## Examples
-
-Run the comprehensive demo:
-
-```bash
-make demo
-```
-
-Or build and run manually:
-
-```bash
-make build
-./bin/zylog-demo
-```
-
-At which point you should see something like the following:
-
-![screenshot](assets/images/screenshot.png)
-
-See the demo code in  `cmd/zylog-demo/main.go` for examples of both logging backends.
-
-## Development
-
-A convenience Bash environment file is provided for easy setup:
-
-```bash
-. .env
-```
-
 ## Background
 
 The formatting style is inspired by the [Twig Clojure](https://github.com/clojusc/twig) and [Logjam LFE](https://github.com/lfex/logjam) libraries.
@@ -220,7 +212,7 @@ Apache License, Version 2.0
 
 [//]: ---Named-Links---
 
-[gh-actions-badge]: https://github.com/zylisp/zylog/workflows/ci%2Fcd/badge.svg
+[gh-actions-badge]: https://github.com/zylisp/zylog/actions/workflows/cicd.yml/badge.svg
 [gh-actions]: https://github.com/zylisp/zylog/actions
 [github-tags]: https://github.com/zylisp/zylog/tags
 [github-tags-badge]: https://img.shields.io/github/tag/zylisp/zylog.svg
