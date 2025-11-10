@@ -62,6 +62,7 @@ func SetupSlog(opts *options.ZyLog) *slog.Logger {
 
 	// 5. Create and return logger
 	logger := slog.New(h)
+	slog.SetDefault(logger)
 	logger.Info("Slog logging initialized.")
 	return logger
 }
