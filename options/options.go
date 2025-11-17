@@ -4,7 +4,7 @@ package options
 import (
 	"fmt"
 
-	"github.com/zylisp/zylog/colors"
+	"github.com/zylisp/zylog/colours"
 	"github.com/zylisp/zylog/formatter"
 )
 
@@ -19,7 +19,7 @@ const (
 
 var (
 	defaultOpts = &ZyLog{
-		Colored:         true,
+		Coloured:        true,
 		Level:           "trace",
 		Output:          "stdout",
 		ReportCaller:    true,
@@ -29,7 +29,7 @@ var (
 		PadSide:         "left",
 		MsgSeparator:    ": ",
 		Logger:          Slog,
-		Colours:         colors.Default(),
+		Colours:         colours.Default(),
 	}
 )
 
@@ -46,7 +46,7 @@ func (l Logger) String() string {
 
 // ZyLog are used by the zylog logger to set up logrus.
 type ZyLog struct {
-	Colored         bool
+	Coloured        bool
 	Level           string
 	Output          string // stdout, stderr, or filesystem
 	ReportCaller    bool
@@ -56,7 +56,7 @@ type ZyLog struct {
 	PadSide         string             // "left" or "right"; which side to pad level strings on
 	MsgSeparator    string             // Separator between message and attributes
 	Logger          Logger             // Logger type: Logrus or Slog
-	Colours         *colors.Colours    // Color configuration (nil uses defaults)
+	Colours         *colours.Colours   // Colour configuration (nil uses defaults)
 }
 
 // Default returns the default ZyLog configuration options.

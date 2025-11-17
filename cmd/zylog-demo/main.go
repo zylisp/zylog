@@ -52,7 +52,7 @@ func SetupLoggerNoColour(ol options.Logger) *slog.Logger {
 	}
 	opts.Logger = ol
 	opts.TimestampFormat = formatter.TimeOnly
-	opts.Colored = false
+	opts.Coloured = false
 	l, _ := zylog.SetupLogging(opts)
 	return l
 }
@@ -95,7 +95,7 @@ func main() {
 	userLogger.Info("User performed action", slog.String("action", "delete"))
 	userLogger.Warn("User attempted restricted operation", slog.String("action", "access_logs"))
 
-	// Demo 4: No color, time-only
+	// Demo 4: No colour, time-only
 	log = SetupLoggerNoColour(options.Slog)
 	log.Info(" *** Slog with timestamps in time-only format, and no colour ***")
 	log.Debug("This is debug")

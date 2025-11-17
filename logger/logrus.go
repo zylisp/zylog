@@ -35,15 +35,15 @@ func SetupLogRUs(opts *options.ZyLog) {
 	default:
 		panic(errors.ErrUnsupLogOutput(opts.Output))
 	}
-	disableColors := !opts.Colored
-	color.NoColor = disableColors
+	disableColours := !opts.Coloured
+	color.NoColor = disableColours
 	timestampFormat := opts.TimestampFormat
 	if timestampFormat == formatter.TSUnset {
 		// Default to Simple if not set
 		timestampFormat = formatter.SimpleTimestamp
 	}
 	log.SetFormatter(&formatter.LogLine{
-		DisableColors:   disableColors,
+		DisableColours:  disableColours,
 		TimestampFormat: timestampFormat,
 		PadLevel:        opts.PadLevel,
 		PadAmount:       opts.PadAmount,

@@ -9,7 +9,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/zylisp/zylog/colors"
+	"github.com/zylisp/zylog/colours"
 	"github.com/zylisp/zylog/level"
 )
 
@@ -47,8 +47,8 @@ func (f TSFormat) ToTimeFormat() string {
 
 // LogLine formats logs into a complete line.
 type LogLine struct {
-	// Force disabling colors.
-	DisableColors bool
+	// Force disabling colours.
+	DisableColours bool
 	// TimestampFormat specifies the format for timestamps.
 	TimestampFormat TSFormat
 	// PadLevel specifies whether to pad level strings for alignment.
@@ -59,8 +59,8 @@ type LogLine struct {
 	PadSide string
 	// AttrSeparator specifies the separator between message and attributes.
 	MsgSeparator string
-	// Colours specifies the color configuration.
-	Colours *colors.Colours
+	// Colours specifies the colour configuration.
+	Colours *colours.Colours
 }
 
 // Format provides the custom formatting of the zylog logger.
@@ -86,7 +86,7 @@ func (f *LogLine) Format(entry *log.Entry) ([]byte, error) {
 	}
 
 	timestamp := FormatTimestamp(entry.Time.Format(f.TimestampFormat.ToTimeFormat()), f.Colours)
-	level := ColorLevel(strings.ToUpper(entry.Level.String()), f.PadLevel, f.PadAmount, f.PadSide, f.Colours)
+	level := ColourLevel(strings.ToUpper(entry.Level.String()), f.PadLevel, f.PadAmount, f.PadSide, f.Colours)
 
 	fmt.Fprintf(b, "%s %s", timestamp, level)
 	if entry.Logger.ReportCaller {
@@ -113,11 +113,11 @@ func (f *LogLine) Format(entry *log.Entry) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
-// ColorLevel determines the color of the log level based upon the string
+// ColourLevel determines the colour of the log level based upon the string
 // value of the log level. If padLevel is true, the level string will be
 // padded to padAmount characters, aligned according to padSide.
-func ColorLevel(lvl string, padLevel bool, padAmount int, padSide string, colours *colors.Colours) string {
-	// Apply padding before colorizing
+func ColourLevel(lvl string, padLevel bool, padAmount int, padSide string, cols *colours.Colours) string {
+	// Apply padding before colourizing
 	if padLevel && padAmount > 0 {
 		if padSide == "left" {
 			// Right-align: add spaces on the left
@@ -128,28 +128,28 @@ func ColorLevel(lvl string, padLevel bool, padAmount int, padSide string, colour
 		}
 	}
 
-	// Now colorize the padded string based on level
+	// Now colourise the padded string based on level
 	trimmedLvl := strings.TrimSpace(lvl)
-	var colorConfig *colors.Color
+	var colourCfg *colours.Colour
 
 	switch trimmedLvl {
 	case level.Trace:
-		colorConfig = colours.LevelTrace
+		colourCfg = cols.LevelTrace
 	case level.Debug:
-		colorConfig = colours.LevelDebug
+		colourCfg = cols.LevelDebug
 	case level.Info:
-		colorConfig = colours.LevelInfo
+		colourCfg = cols.LevelInfo
 	case level.Warn, level.Warning:
-		colorConfig = colours.LevelWarn
+		colourCfg = cols.LevelWarn
 	case level.Error:
-		colorConfig = colours.LevelError
+		colourCfg = cols.LevelError
 	case level.Fatal:
-		colorConfig = colours.LevelFatal
+		colourCfg = cols.LevelFatal
 	case level.Panic:
-		colorConfig = colours.LevelPanic
+		colourCfg = cols.LevelPanic
 	default:
 		return lvl
 	}
 
-	return colorConfig.ApplyColor(lvl)
+	return colourCfg.ApplyColour(lvl)
 }

@@ -60,7 +60,7 @@ import (
 func main() {
     // Configure with slog (default)
     logger, err := zylog.SetupLogging(&options.ZyLog{
-        Colored:         true,
+        Coloured:         true,
         Level:           "info",
         Output:          "stdout",
         ReportCaller:    true,
@@ -136,7 +136,7 @@ func main() {
 
 ```go
 type ZyLog struct {
-    Colored         bool                // Enable colored output
+    Coloured         bool                // Enable colored output
     Level           string              // Log level: "trace", "debug", "info", "warn", "error"
     Output          string              // Output destination: "stdout", "stderr"
     ReportCaller    bool                // Include caller information
@@ -169,7 +169,7 @@ Zylog allows you to customize the foreground and background colors of every form
 import (
     "github.com/fatih/color"
     "github.com/zylisp/zylog"
-    "github.com/zylisp/zylog/colors"
+    "github.com/zylisp/zylog/colours"
     "github.com/zylisp/zylog/options"
 )
 
@@ -177,11 +177,11 @@ func main() {
     opts := options.Default()
 
     // Customize just the colors you want to change
-    opts.Colours.LevelError = &colors.Color{
+    opts.Colours.LevelError = &colours.Color{
         Fg: color.FgHiRed,
         Bg: color.BgYellow,  // Add yellow background to errors
     }
-    opts.Colours.Message = &colors.Color{
+    opts.Colours.Message = &colours.Color{
         Fg: color.FgHiWhite,
         Bg: color.Reset,  // No background
     }
@@ -197,7 +197,7 @@ To disable color for a specific element while keeping others colored, set both F
 
 ```go
 opts := options.Default()
-opts.Colours.Timestamp = &colors.Color{
+opts.Colours.Timestamp = &colours.Color{
     Fg: color.Reset,
     Bg: color.Reset,
 }
@@ -247,27 +247,30 @@ type Color struct {
 Available color attributes from `github.com/fatih/color`:
 
 **Foreground colors:**
+
 - `color.FgBlack`, `color.FgRed`, `color.FgGreen`, `color.FgYellow`
 - `color.FgBlue`, `color.FgMagenta`, `color.FgCyan`, `color.FgWhite`
 - `color.FgHiBlack`, `color.FgHiRed`, `color.FgHiGreen`, `color.FgHiYellow`
 - `color.FgHiBlue`, `color.FgHiMagenta`, `color.FgHiCyan`, `color.FgHiWhite`
 
 **Background colors:**
+
 - `color.BgBlack`, `color.BgRed`, `color.BgGreen`, `color.BgYellow`
 - `color.BgBlue`, `color.BgMagenta`, `color.BgCyan`, `color.BgWhite`
 - `color.BgHiBlack`, `color.BgHiRed`, `color.BgHiGreen`, `color.BgHiYellow`
 - `color.BgHiBlue`, `color.BgHiMagenta`, `color.BgHiCyan`, `color.BgHiWhite`
 
 **Special:**
+
 - `color.Reset` - No color (use for both Fg and Bg to disable coloring for an element)
 
 ### Global Color Disable
 
-The existing `Colored: false` option continues to work and will disable ALL colors regardless of individual color settings:
+The existing `Coloured: false` option continues to work and will disable ALL colors regardless of individual color settings:
 
 ```go
 opts := options.Default()
-opts.Colored = false  // Disables all colors globally
+opts.Coloured = false  // Disables all colors globally
 ```
 
 ## Timestamp Formats

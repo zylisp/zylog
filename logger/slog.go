@@ -46,9 +46,9 @@ func SetupSlog(opts *options.ZyLog) *slog.Logger {
 		panic(errors.ErrUnsupLogOutput(opts.Output))
 	}
 
-	// 2. Configure color mode
-	disableColors := !opts.Colored
-	color.NoColor = disableColors
+	// 2. Configure colour mode
+	disableColours := !opts.Coloured
+	color.NoColor = disableColours
 
 	// 3. Set default timestamp format if unset
 	timestampFormat := opts.TimestampFormat
@@ -98,7 +98,7 @@ func (h *SLogHandler) Handle(_ context.Context, r slog.Record) error {
 
 	// 2. Format level
 	levelStr := slogLevelToString(r.Level)
-	levelFormatted := formatter.ColorLevel(levelStr, h.opts.PadLevel, h.opts.PadAmount, h.opts.PadSide, h.opts.Colours)
+	levelFormatted := formatter.ColourLevel(levelStr, h.opts.PadLevel, h.opts.PadAmount, h.opts.PadSide, h.opts.Colours)
 	buf.WriteString(levelFormatted)
 
 	// 3. Format caller if enabled
@@ -194,7 +194,10 @@ func (h *SLogHandler) appendAttr(buf *strings.Builder, attr slog.Attr) {
 	key := prefix + attr.Key
 	value := attr.Value.String()
 
-	fmt.Fprintf(buf, "%s={%s}", formatter.FormatAttrKey(key, h.opts.Colours), formatter.FormatAttrValue(value, h.opts.Colours))
+	fmt.Fprintf(buf, "%s={%s}",
+		formatter.FormatAttrKey(key, h.opts.Colours),
+		formatter.FormatAttrValue(value, h.opts.Colours),
+	)
 }
 
 // slogLevelToString converts a slog.Level to a zylog level string.
