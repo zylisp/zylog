@@ -159,6 +159,117 @@ opts := options.Default()
 opts := options.NoCaller()
 ```
 
+## Color Customization
+
+Zylog allows you to customize the foreground and background colors of every formatted element. By default, zylog uses sensible color defaults, but you can override any color you want.
+
+### Simple Example - Changing a Few Colors
+
+```go
+import (
+    "github.com/fatih/color"
+    "github.com/zylisp/zylog"
+    "github.com/zylisp/zylog/colors"
+    "github.com/zylisp/zylog/options"
+)
+
+func main() {
+    opts := options.Default()
+
+    // Customize just the colors you want to change
+    opts.Colours.LevelError = &colors.Color{
+        Fg: color.FgHiRed,
+        Bg: color.BgYellow,  // Add yellow background to errors
+    }
+    opts.Colours.Message = &colors.Color{
+        Fg: color.FgHiWhite,
+        Bg: color.Reset,  // No background
+    }
+
+    logger, _ := zylog.SetupLogging(opts)
+    logger.Error("This error has a yellow background!")
+}
+```
+
+### Disabling Color for Specific Elements
+
+To disable color for a specific element while keeping others colored, set both Fg and Bg to `color.Reset`:
+
+```go
+opts := options.Default()
+opts.Colours.Timestamp = &colors.Color{
+    Fg: color.Reset,
+    Bg: color.Reset,
+}
+// Timestamp will now be uncolored, but everything else remains colored
+```
+
+### Complete Color Configuration Reference
+
+The `Colours` struct provides fine-grained control over every colored element:
+
+```go
+type Colours struct {
+    // Timestamp colors (default: HiBlack/grey)
+    Timestamp *Color
+
+    // Log level colors
+    LevelTrace   *Color  // default: HiMagenta
+    LevelDebug   *Color  // default: HiCyan
+    LevelInfo    *Color  // default: HiGreen
+    LevelWarn    *Color  // default: HiYellow
+    LevelWarning *Color  // default: HiYellow
+    LevelError   *Color  // default: Red
+    LevelFatal   *Color  // default: HiRed
+    LevelPanic   *Color  // default: HiWhite
+
+    // Message text color (default: Green)
+    Message *Color
+
+    // Arrow separator " ▶ " (default: Cyan)
+    Arrow *Color
+
+    // Caller information colors
+    CallerFunction *Color  // default: HiYellow
+    CallerLine     *Color  // default: Yellow
+
+    // Structured logging attribute colors
+    AttrKey   *Color  // default: Yellow
+    AttrValue *Color  // default: HiYellow
+}
+
+type Color struct {
+    Fg color.Attribute  // Foreground color
+    Bg color.Attribute  // Background color
+}
+```
+
+Available color attributes from `github.com/fatih/color`:
+
+**Foreground colors:**
+- `color.FgBlack`, `color.FgRed`, `color.FgGreen`, `color.FgYellow`
+- `color.FgBlue`, `color.FgMagenta`, `color.FgCyan`, `color.FgWhite`
+- `color.FgHiBlack`, `color.FgHiRed`, `color.FgHiGreen`, `color.FgHiYellow`
+- `color.FgHiBlue`, `color.FgHiMagenta`, `color.FgHiCyan`, `color.FgHiWhite`
+
+**Background colors:**
+- `color.BgBlack`, `color.BgRed`, `color.BgGreen`, `color.BgYellow`
+- `color.BgBlue`, `color.BgMagenta`, `color.BgCyan`, `color.BgWhite`
+- `color.BgHiBlack`, `color.BgHiRed`, `color.BgHiGreen`, `color.BgHiYellow`
+- `color.BgHiBlue`, `color.BgHiMagenta`, `color.BgHiCyan`, `color.BgHiWhite`
+
+**Special:**
+- `color.Reset` - No color (use for both Fg and Bg to disable coloring for an element)
+
+### Global Color Disable
+
+The existing `Colored: false` option continues to work and will disable ALL colors regardless of individual color settings:
+
+```go
+opts := options.Default()
+opts.Colored = false  // Disables all colors globally
+```
+
 ## Timestamp Formats
 
 Zylog supports multiple timestamp formats:

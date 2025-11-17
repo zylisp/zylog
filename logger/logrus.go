@@ -49,6 +49,7 @@ func SetupLogRUs(opts *options.ZyLog) {
 		PadAmount:       opts.PadAmount,
 		PadSide:         opts.PadSide,
 		MsgSeparator:    opts.MsgSeparator,
+		Colours:         opts.Colours,
 	})
 	log.SetReportCaller(opts.ReportCaller)
 	log.Info("Logging initialized.")

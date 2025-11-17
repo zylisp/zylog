@@ -93,25 +93,25 @@ func (h *SLogHandler) Handle(_ context.Context, r slog.Record) error {
 
 	// 1. Format timestamp
 	timestampStr := r.Time.Format(h.opts.TimestampFormat.ToTimeFormat())
-	buf.WriteString(formatter.FormatTimestamp(timestampStr))
+	buf.WriteString(formatter.FormatTimestamp(timestampStr, h.opts.Colours))
 	buf.WriteString(" ")
 
 	// 2. Format level
 	levelStr := slogLevelToString(r.Level)
-	levelFormatted := formatter.ColorLevel(levelStr, h.opts.PadLevel, h.opts.PadAmount, h.opts.PadSide)
+	levelFormatted := formatter.ColorLevel(levelStr, h.opts.PadLevel, h.opts.PadAmount, h.opts.PadSide, h.opts.Colours)
 	buf.WriteString(levelFormatted)
 
 	// 3. Format caller if enabled
 	if h.opts.ReportCaller && r.PC != 0 {
 		fs := runtime.CallersFrames([]uintptr{r.PC})
 		f, _ := fs.Next()
-		buf.WriteString(formatter.FormatCaller(f.Function, f.Line))
+		buf.WriteString(formatter.FormatCaller(f.Function, f.Line, h.opts.Colours))
 	}
 
 	// 4. Format message
 	if r.Message != "" {
-		buf.WriteString(formatter.FormatArrow())
-		buf.WriteString(formatter.FormatMessage(r.Message))
+		buf.WriteString(formatter.FormatArrow(h.opts.Colours))
+		buf.WriteString(formatter.FormatMessage(r.Message, h.opts.Colours))
 	}
 
 	// 5. Format attributes
@@ -194,7 +194,7 @@ func (h *SLogHandler) appendAttr(buf *strings.Builder, attr slog.Attr) {
 	key := prefix + attr.Key
 	value := attr.Value.String()
 
-	fmt.Fprintf(buf, "%s={%s}", formatter.FormatAttrKey(key), formatter.FormatAttrValue(value))
+	fmt.Fprintf(buf, "%s={%s}", formatter.FormatAttrKey(key, h.opts.Colours), formatter.FormatAttrValue(value, h.opts.Colours))
 }
 
 // slogLevelToString converts a slog.Level to a zylog level string.

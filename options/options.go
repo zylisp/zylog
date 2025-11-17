@@ -4,6 +4,7 @@ package options
 import (
 	"fmt"
 
+	"github.com/zylisp/zylog/colors"
 	"github.com/zylisp/zylog/formatter"
 )
 
@@ -28,6 +29,7 @@ var (
 		PadSide:         "left",
 		MsgSeparator:    ": ",
 		Logger:          Slog,
+		Colours:         colors.Default(),
 	}
 )
 
@@ -54,6 +56,7 @@ type ZyLog struct {
 	PadSide         string             // "left" or "right"; which side to pad level strings on
 	MsgSeparator    string             // Separator between message and attributes
 	Logger          Logger             // Logger type: Logrus or Slog
+	Colours         *colors.Colours    // Color configuration (nil uses defaults)
 }
 
 // Default returns the default ZyLog configuration options.

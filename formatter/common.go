@@ -3,37 +3,37 @@ package formatter
 import (
 	"fmt"
 
-	"github.com/fatih/color"
+	"github.com/zylisp/zylog/colors"
 )
 
-// FormatTimestamp formats a time string with light grey color.
-func FormatTimestamp(timestamp string) string {
-	return color.HiBlackString(timestamp)
+// FormatTimestamp formats a time string with the configured color.
+func FormatTimestamp(timestamp string, colours *colors.Colours) string {
+	return colours.Timestamp.ApplyColor(timestamp)
 }
 
-// FormatMessage formats a log message with dark green color.
-func FormatMessage(message string) string {
-	return color.GreenString(message)
+// FormatMessage formats a log message with the configured color.
+func FormatMessage(message string, colours *colors.Colours) string {
+	return colours.Message.ApplyColor(message)
 }
 
 // FormatArrow returns the colored arrow separator.
-func FormatArrow() string {
-	return color.CyanString(" ▶ ")
+func FormatArrow(colours *colors.Colours) string {
+	return colours.Arrow.ApplyColor(" ▶ ")
 }
 
-// FormatCaller formats caller information with yellow colors.
-func FormatCaller(function string, line int) string {
-	return fmt.Sprintf(" [%s:%s]",
-		color.HiYellowString(function),
-		color.YellowString(fmt.Sprintf("%d", line)))
+// FormatCaller formats caller information with the configured colors.
+func FormatCaller(function string, line int, colours *colors.Colours) string {
+	functionStr := colours.CallerFunction.ApplyColor(function)
+	lineStr := colours.CallerLine.ApplyColor(fmt.Sprintf("%d", line))
+	return fmt.Sprintf(" [%s:%s]", functionStr, lineStr)
 }
 
-// FormatAttrKey formats an attribute key with yellow color.
-func FormatAttrKey(key string) string {
-	return color.YellowString(key)
+// FormatAttrKey formats an attribute key with the configured color.
+func FormatAttrKey(key string, colours *colors.Colours) string {
+	return colours.AttrKey.ApplyColor(key)
 }
 
-// FormatAttrValue formats an attribute value with bright yellow color.
-func FormatAttrValue(value string) string {
-	return color.HiYellowString(value)
+// FormatAttrValue formats an attribute value with the configured color.
+func FormatAttrValue(value string, colours *colors.Colours) string {
+	return colours.AttrValue.ApplyColor(value)
 }
