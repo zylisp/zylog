@@ -7,7 +7,7 @@
 
 ## Features
 
-- 🎨 Beautifully colored output with customizable colors
+- 🎨 Beautifully coloured output with customizable colours
 - 🔄 Support for both **slog** (Go standard library) and **logrus**
 - 📍 Optional caller information (package, function, line number)
 - ⏰ Multiple timestamp formats (RFC3339, Standard, Simple, Time-only)
@@ -136,7 +136,7 @@ func main() {
 
 ```go
 type ZyLog struct {
-    Coloured         bool                // Enable colored output
+    Coloured         bool                // Enable coloured output
     Level           string              // Log level: "trace", "debug", "info", "warn", "error"
     Output          string              // Output destination: "stdout", "stderr"
     ReportCaller    bool                // Include caller information
@@ -159,11 +159,11 @@ opts := options.Default()
 opts := options.NoCaller()
 ```
 
-## Color Customization
+## Colour Customization
 
-Zylog allows you to customize the foreground and background colors of every formatted element. By default, zylog uses sensible color defaults, but you can override any color you want.
+Zylog allows you to customize the foreground and background colours of every formatted element. By default, zylog uses sensible colour defaults, but you can override any colour you want.
 
-### Simple Example - Changing a Few Colors
+### Simple Example - Changing a Few Colours
 
 ```go
 import (
@@ -176,12 +176,12 @@ import (
 func main() {
     opts := options.Default()
 
-    // Customize just the colors you want to change
-    opts.Colours.LevelError = &colours.Color{
+    // Customize just the colours you want to change
+    opts.Colours.LevelError = &colours.Colour{
         Fg: color.FgHiRed,
         Bg: color.BgYellow,  // Add yellow background to errors
     }
-    opts.Colours.Message = &colours.Color{
+    opts.Colours.Message = &colours.Colour{
         Fg: color.FgHiWhite,
         Bg: color.Reset,  // No background
     }
@@ -191,69 +191,69 @@ func main() {
 }
 ```
 
-### Disabling Color for Specific Elements
+### Disabling Colour for Specific Elements
 
-To disable color for a specific element while keeping others colored, set both Fg and Bg to `color.Reset`:
+To disable colour for a specific element while keeping others coloured, set both Fg and Bg to `color.Reset`:
 
 ```go
 opts := options.Default()
-opts.Colours.Timestamp = &colours.Color{
+opts.Colours.Timestamp = &colours.Colour{
     Fg: color.Reset,
     Bg: color.Reset,
 }
-// Timestamp will now be uncolored, but everything else remains colored
+// Timestamp will now be uncoloured, but everything else remains coloured
 ```
 
-### Complete Color Configuration Reference
+### Complete Colour Configuration Reference
 
-The `Colours` struct provides fine-grained control over every colored element:
+The `Colours` struct provides fine-grained control over every coloured element:
 
 ```go
 type Colours struct {
-    // Timestamp colors (default: HiBlack/grey)
-    Timestamp *Color
+    // Timestamp colours (default: HiBlack/grey)
+    Timestamp *Colour
 
-    // Log level colors
-    LevelTrace   *Color  // default: HiMagenta
-    LevelDebug   *Color  // default: HiCyan
-    LevelInfo    *Color  // default: HiGreen
-    LevelWarn    *Color  // default: HiYellow
-    LevelWarning *Color  // default: HiYellow
-    LevelError   *Color  // default: Red
-    LevelFatal   *Color  // default: HiRed
-    LevelPanic   *Color  // default: HiWhite
+    // Log level colours
+    LevelTrace   *Colour  // default: HiMagenta
+    LevelDebug   *Colour  // default: HiCyan
+    LevelInfo    *Colour  // default: HiGreen
+    LevelWarn    *Colour  // default: HiYellow
+    LevelWarning *Colour  // default: HiYellow
+    LevelError   *Colour  // default: Red
+    LevelFatal   *Colour  // default: HiRed
+    LevelPanic   *Colour  // default: HiWhite
 
-    // Message text color (default: Green)
-    Message *Color
+    // Message text colour (default: Green)
+    Message *Colour
 
     // Arrow separator " ▶ " (default: Cyan)
-    Arrow *Color
+    Arrow *Colour
 
-    // Caller information colors
-    CallerFunction *Color  // default: HiYellow
-    CallerLine     *Color  // default: Yellow
+    // Caller information colours
+    CallerFunction *Colour  // default: HiYellow
+    CallerLine     *Colour  // default: Yellow
 
-    // Structured logging attribute colors
-    AttrKey   *Color  // default: Yellow
-    AttrValue *Color  // default: HiYellow
+    // Structured logging attribute colours
+    AttrKey   *Colour  // default: Yellow
+    AttrValue *Colour  // default: HiYellow
 }
 
-type Color struct {
-    Fg color.Attribute  // Foreground color
-    Bg color.Attribute  // Background color
+type Colour struct {
+    Fg color.Attribute  // Foreground colour from github.com/fatih/color
+    Bg color.Attribute  // Background colour from github.com/fatih/color
 }
 ```
 
-Available color attributes from `github.com/fatih/color`:
+Available colour attributes from `github.com/fatih/color`:
 
-**Foreground colors:**
+**Foreground colours:**
 
 - `color.FgBlack`, `color.FgRed`, `color.FgGreen`, `color.FgYellow`
 - `color.FgBlue`, `color.FgMagenta`, `color.FgCyan`, `color.FgWhite`
 - `color.FgHiBlack`, `color.FgHiRed`, `color.FgHiGreen`, `color.FgHiYellow`
 - `color.FgHiBlue`, `color.FgHiMagenta`, `color.FgHiCyan`, `color.FgHiWhite`
 
-**Background colors:**
+**Background colours:**
 
 - `color.BgBlack`, `color.BgRed`, `color.BgGreen`, `color.BgYellow`
 - `color.BgBlue`, `color.BgMagenta`, `color.BgCyan`, `color.BgWhite`
@@ -262,15 +262,15 @@ Available color attributes from `github.com/fatih/color`:
 
 **Special:**
 
-- `color.Reset` - No color (use for both Fg and Bg to disable coloring for an element)
+- `color.Reset` - No colour (use for both Fg and Bg to disable colouring for an element)
 
-### Global Color Disable
+### Global Colour Disable
 
-The existing `Coloured: false` option continues to work and will disable ALL colors regardless of individual color settings:
+The existing `Coloured: false` option continues to work and will disable ALL colours regardless of individual colour settings:
 
 ```go
 opts := options.Default()
-opts.Coloured = false  // Disables all colors globally
+opts.Coloured = false  // Disables all colours globally
 ```
 
 ## Timestamp Formats
